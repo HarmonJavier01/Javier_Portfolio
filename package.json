@@ -1,0 +1,12 @@
+{
+  "name": "harmon-javier-portfolio",
+  "version": "1.0.0",
+  "description": "Harmon Javier — Full-Stack Web & Mobile Developer Journal Portfolio",
+  "scripts": {
+    "start": "npx serve -l 3000 ."
+  },
+  "author": "Harmon Javier",
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
+}

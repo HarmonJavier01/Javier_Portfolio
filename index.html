@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harmon Javier — Full-Stack Web &amp; Mobile Developer</title>
+<meta name="description" content="Personal portfolio and developer journal of Harmon Javier — Full-Stack Web & Mobile Developer and BSIT student at University of Eastern Pangasinan.">
+<style>
+  :root {
+    --paper: #F7F5F0;
+    --ink: #1B1B1B;
+    --ink-soft: #4A473F;
+    --rule: #D8D3C6;
+    --rule-strong: #B9B2A0;
+    --accent: #26415E;
+    --accent-2: #2F5D50;
+    --card: #FDFCF9;
+    --transition-speed: 0.35s;
+  }
+
+  html.dark {
+    --paper: #14181C;
+    --ink: #E8E6DF;
+    --ink-soft: #A9A499;
+    --rule: #2B323A;
+    --rule-strong: #3A424B;
+    --accent: #7FA6D9;
+    --accent-2: #6FA88F;
+    --card: #191E23;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--paper);
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Times New Roman", Times, "Liberation Serif", serif;
+    transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .rule-link {
+    position: relative;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 1px;
+    display: inline-block;
+  }
+  .rule-link::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -1px;
+    width: 0%; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  .rule-link:hover {
+    color: var(--accent);
+  }
+  .rule-link:hover::after {
+    width: 100%;
+  }
+
+  /* ===== Layout shell: margin-ruled notebook (naturally fits the screen) ===== */
+  .page {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .margin-rule {
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .margin-rule::before {
+    content: "";
+    position: absolute;
+    left: 24px; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--rule);
+    opacity: 0.65;
+  }
+  .content {
+    padding: 0 48px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 960px) {
+    .page {
+      grid-template-columns: 40px minmax(0, 1fr);
+    }
+    .content { padding: 0 24px; }
+    .margin-rule::before { left: 16px; }
+  }
+
+  @media (max-width: 720px) {
+    .page {
+      grid-template-columns: 24px minmax(0, 1fr);
+    }
+    .content { padding: 0 16px; }
+    .margin-rule::before { left: 10px; }
+  }
+
+  /* ===== Top bar ===== */
+  header.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    z-index: 50;
+    transition: background var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  }
+  .brand {
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+  .brand em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  nav.primary-nav {
+    display: flex;
+    gap: 24px;
+    font-size: 0.95rem;
+  }
+  nav.primary-nav a {
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+    transition: color 0.25s ease, border-color 0.25s ease;
+  }
+  nav.primary-nav a:hover,
+  nav.primary-nav a.active {
+    color: var(--ink);
+    border-color: var(--rule-strong);
+  }
+
+  @media (max-width: 820px) {
+    nav.primary-nav { display: none; }
+  }
+
+  /* ===== Toggle (ink-pen flip switch) ===== */
+  .toggle {
+    width: 48px;
+    height: 24px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    position: relative;
+    cursor: pointer;
+    background: transparent;
+    flex-shrink: 0;
+    padding: 0;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  .toggle-knob {
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--ink);
+    transition: transform 0.35s cubic-bezier(.65,-0.1,.35,1.3), background 0.3s ease;
+  }
+  html.dark .toggle-knob {
+    transform: translateX(24px);
+    background: var(--accent);
+  }
+
+  /* ===== Hero: orchestrated load-in ===== */
+  .hero {
+    padding: 32px 0 0;
+    border-bottom: none;
+    box-sizing: border-box;
+  }
+
+  .hero .kicker {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 1rem;
+    margin: 0 0 12px;
+    opacity: 0;
+    animation: rise 0.7s ease forwards;
+    animation-delay: 0.05s;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 4.4vw, 3.8rem);
+    line-height: 1.1;
+    margin: 0 0 22px;
+    font-weight: 400;
+    opacity: 0;
+    animation: rise 0.8s ease forwards;
+    animation-delay: 0.18s;
+  }
+  .hero h1 .accent {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero p.lede {
+    font-size: 1.18rem;
+    color: var(--ink-soft);
+    max-width: 58ch;
+    line-height: 1.65;
+    margin: 0 0 34px;
+    opacity: 0;
+    animation: rise 0.8s ease forwards;
+    animation-delay: 0.32s;
+  }
+  .hero .cta-row {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: rise 0.8s ease forwards;
+    animation-delay: 0.46s;
+  }
+  .hero .draw-rule {
+    margin-top: 36px;
+    height: 1px;
+    background: var(--rule-strong);
+    width: 0%;
+    animation: draw 1s ease forwards;
+    animation-delay: 0.6s;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes draw {
+    to { width: 100%; }
+  }
+
+  /* ===== Hero layout with framed photo ===== */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 270px;
+    max-width: 1440px;
+    gap: 80px;
+    align-items: center;
+  }
+  .hero-photo {
+    opacity: 0;
+    animation: rise 0.8s ease forwards;
+    animation-delay: 0.4s;
+    text-align: center;
+    width: 270px;
+  }
+  .photo-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--rule-strong);
+    padding: 10px;
+    background: var(--card);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.3s ease;
+  }
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(65%) contrast(1.05);
+    display: block;
+    transition: filter 0.45s ease;
+  }
+  .photo-frame:hover img {
+    filter: grayscale(0%) contrast(1);
+  }
+  .photo-fallback {
+    display: none;
+    position: absolute;
+    inset: 8px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    border: 1px dashed var(--rule-strong);
+    line-height: 1.5;
+  }
+  .photo-frame.no-photo img { display: none; }
+  .photo-frame.no-photo .photo-fallback { display: flex; }
+  .photo-caption {
+    margin: 10px 0 0;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .hero-photo {
+      width: 170px;
+      margin: 0 0 16px 0;
+      order: -1;
+    }
+  }
+
+  /* ===== Buttons ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 9px 20px;
+    border: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+  .btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn.btn-solid {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn.btn-solid:hover {
+    background: transparent;
+    color: var(--ink);
+  }
+  .btn.quiet {
+    border-color: transparent;
+    padding: 9px 4px;
+    color: var(--ink-soft);
+  }
+  .btn.quiet:hover {
+    background: transparent;
+    color: var(--accent);
+  }
+
+  /* ===== Section shells (Singular clean dividers, no double lines) ===== */
+  section {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  section:last-of-type {
+    border-bottom: none;
+  }
+  section.hero {
+    padding: 32px 0 0;
+    border-bottom: none;
+  }
+  section#about {
+    padding-top: 36px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  .section-head h2 {
+    font-size: 1.75rem;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .section-head .num {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  p {
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+  p:last-child { margin-bottom: 0; }
+
+  /* ===== About ===== */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .about-grid p {
+    font-size: 1.1rem;
+    max-width: 62ch;
+  }
+
+  /* ===== Tech stack: ledger running rows ===== */
+  .stack-group {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin: 28px 0 8px;
+  }
+  .stack-group:first-of-type {
+    margin-top: 0;
+  }
+  .stack-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .stack-row {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 20px;
+    padding: 13px 8px;
+    border-top: 1px solid var(--rule);
+    align-items: baseline;
+    transition: background 0.2s ease;
+  }
+  .stack-row:hover {
+    background: var(--card);
+  }
+  .stack-row .cat {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .stack-row .items {
+    color: var(--ink);
+    font-size: 1.02rem;
+    line-height: 1.6;
+  }
+  .stack-row .items span:not(:last-child)::after {
+    content: " · ";
+    color: var(--rule-strong);
+  }
+
+  @media (max-width: 580px) {
+    .stack-row { grid-template-columns: 1fr; gap: 4px; padding: 10px 4px; }
+  }
+
+  /* ===== Projects: journal entries ===== */
+  .project-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .entry {
+    padding: 26px 8px;
+    border-top: 1px solid var(--rule);
+    transition: padding-left 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  }
+  .entry:hover {
+    padding-left: 18px;
+    border-color: var(--accent);
+    background: var(--card);
+  }
+  .entry-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .entry-head h3 {
+    font-size: 1.32rem;
+    font-weight: 400;
+    margin: 0;
+    color: var(--ink);
+  }
+  .entry-head .tags {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    text-align: right;
+  }
+  .entry p {
+    margin: 12px 0 0;
+    max-width: 64ch;
+    font-size: 1.02rem;
+  }
+  .entry .links {
+    margin-top: 16px;
+    display: flex;
+    gap: 22px;
+    font-size: 0.96rem;
+  }
+
+  /* ===== Certificates & Seminars: ledger table rows ===== */
+  .ledger-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .ledger {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  .ledger tr {
+    border-top: 1px solid var(--rule);
+    transition: background 0.25s ease;
+  }
+  .ledger tr:hover {
+    background: var(--card);
+  }
+  .ledger td {
+    padding: 15px 10px;
+    vertical-align: top;
+    font-size: 1.02rem;
+  }
+  .ledger td.date {
+    color: var(--ink-soft);
+    font-style: italic;
+    white-space: nowrap;
+    width: 130px;
+  }
+  .ledger td.title {
+    color: var(--ink);
+  }
+  .ledger td.title .sub {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  .ledger td.issuer {
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  .cert-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  @media (max-width: 600px) {
+    .ledger, .ledger tbody, .ledger tr, .ledger td {
+      display: block;
+      width: 100%;
+    }
+    .ledger td { padding: 6px 4px; }
+    .ledger td.issuer { text-align: left; padding-bottom: 14px; }
+    .ledger td.date { width: auto; padding-top: 12px; }
+  }
+
+  .table-note {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    margin-top: 20px;
+  }
+
+  /* ===== Contact ===== */
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+  }
+  @media (max-width: 720px) {
+    .contact-wrap { grid-template-columns: 1fr; gap: 36px; }
+  }
+  .field {
+    margin-bottom: 22px;
+  }
+  .field label {
+    display: block;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+    margin-bottom: 6px;
+  }
+  .field input, .field textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 1.02rem;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule-strong);
+    color: var(--ink);
+    padding: 8px 2px;
+    outline: none;
+    transition: border-color 0.25s ease;
+    border-radius: 0;
+  }
+  .field input:focus, .field textarea:focus {
+    border-color: var(--accent);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 96px;
+  }
+
+  .contact-dispatch-alert {
+    display: none;
+    padding: 12px 14px;
+    margin-top: 14px;
+    border: 1px solid var(--accent-2);
+    background: var(--card);
+    color: var(--ink);
+    font-style: italic;
+    font-size: 0.95rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: start;
+    padding-top: 4px;
+  }
+  .contact-meta-item {
+    font-size: 0.96rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .contact-meta-item strong {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    padding: 34px 0 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--rule);
+  }
+  #toTop {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 0.92rem;
+    padding: 6px;
+    transition: color 0.25s ease;
+  }
+  #toTop:hover {
+    color: var(--accent);
+  }
+
+  /* ===== Certificate Lightbox Modal ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 18, 21, 0.75);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+  .modal-card {
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    max-width: 720px;
+    width: 100%;
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  }
+  .modal-close {
+    position: absolute;
+    top: 12px; right: 14px;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 1.4rem;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .modal-img {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    border: 1px solid var(--rule);
+    background: #fff;
+    display: block;
+  }
+  .modal-caption {
+    margin-top: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="margin-rule"></div>
+  <div class="content">
+
+    <header class="topbar">
+      <div class="brand">Harmon Javier <em>— Web | Mobile developer</em></div>
+      <nav class="primary-nav">
+        <a href="#about" class="rule-link">About</a>
+        <a href="#stack" class="rule-link">Stack</a>
+        <a href="#projects" class="rule-link">Projects</a>
+        <a href="#certificates" class="rule-link">Certificates</a>
+        <a href="#seminars" class="rule-link">Seminars</a>
+        <a href="#contact" class="rule-link">Contact</a>
+      </nav>
+      <button class="toggle" id="modeToggle" aria-label="Toggle dark mode" aria-pressed="false" title="Switch ink theme">
+        <span class="toggle-knob"></span>
+      </button>
+    </header>
+
+    <section class="hero" id="top">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <p class="kicker">Sison, Pangasinan, Philippines</p>
+          <h1>Harmon Javier — <span class="accent">Full-Stack</span><br>Web &amp; Mobile Developer</h1>
+          <p class="lede">
+            BSIT student at the University of Eastern Pangasinan, building web, mobile,
+            cloud, and e-commerce software for clients from local shops to a Canada-based
+            team — one project at a time.
+          </p>
+          <div class="cta-row">
+            <a href="#projects" class="btn btn-solid">View projects</a>
+            <a href="HARMON L. JAVIER.pdf" download="Harmon_Javier_Resume.pdf" class="btn" target="_blank">Download CV ↓</a>
+            <a href="#contact" class="btn quiet">Get in touch →</a>
+          </div>
+        </div>
+        <div class="hero-photo">
+          <div class="photo-frame">
+            <img src="profile.jpg" alt="Portrait of Harmon Javier" onerror="this.parentElement.classList.add('no-photo')">
+            <span class="photo-fallback">Add<br>profile.jpg</span>
+          </div>
+          <!-- <p class="photo-caption">Harmon Javier</p> -->
+        </div>
+      </div>
+      <div class="draw-rule"></div>
+    </section>
+
+    <section id="about">
+      <div class="section-head"><h2>About</h2><span class="num">01</span></div>
+      <div class="about-grid">
+        <p>
+          I'm a freelance full-stack developer currently completing my IT degree at
+          the University of Eastern Pangasinan. My practice spans web, mobile, cloud,
+          and e-commerce systems — including an ongoing international engineering engagement
+          with a Canada-based client, alongside independent platforms for smart parking,
+          career matching, and offline-first mental health management.
+        </p>
+        <p>
+          I enjoy taking systems from an initial rough concept all the way to production
+          deployment — composing resilient client interfaces, architecting clean API layers,
+          orchestrating relational and document databases, and systematically chasing down
+          the CORS and auth edge-cases before release day.
+        </p>
+      </div>
+    </section>
+
+    <section id="stack">
+      <div class="section-head"><h2>Tech Stack</h2><span class="num">02</span></div>
+
+      <p class="stack-group">Frontend</p>
+      <div class="stack-list">
+        <div class="stack-row">
+          <div class="cat">Frameworks &amp; Libraries</div>
+          <div class="items"><span>React</span><span>Vue</span><span>Vite</span><span>HTML/CSS</span><span>Tailwind</span><span>Bootstrap</span><span>Flutter</span></div>
+        </div>
+      </div>
+
+      <p class="stack-group">Backend Development</p>
+      <div class="stack-list">
+        <div class="stack-row">
+          <div class="cat">Languages</div>
+          <div class="items"><span>PHP</span><span>JavaScript / Node.js</span><span>Python</span><span>Java</span><span>C#</span><span>Go</span><span>Ruby</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">Frameworks</div>
+          <div class="items"><span>Laravel</span><span>Symfony</span><span>Express.js</span><span>NestJS</span><span>Django</span><span>FastAPI</span><span>Spring Boot</span><span>ASP.NET Core</span><span>Ruby on Rails</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">APIs</div>
+          <div class="items"><span>REST API</span><span>GraphQL</span><span>WebSockets</span><span>Webhooks</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">Auth &amp; Security</div>
+          <div class="items"><span>JWT</span><span>OAuth 2.0</span><span>Sessions</span><span>Passport.js</span><span>Laravel Sanctum</span><span>Laravel Passport</span><span>CSRF</span><span>CORS</span></div>
+        </div>
+      </div>
+
+      <p class="stack-group">UI/UX</p>
+      <div class="stack-list">
+        <div class="stack-row">
+          <div class="cat">Design Tools</div>
+          <div class="items"><span>Figma</span><span>Canva</span></div>
+        </div>
+      </div>
+
+      <p class="stack-group">Database</p>
+      <div class="stack-list">
+        <div class="stack-row">
+          <div class="cat">SQL</div>
+          <div class="items"><span>MySQL</span><span>PostgreSQL</span><span>Microsoft SQL Server</span><span>SQLite</span><span>MariaDB</span><span>Oracle Database</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">NoSQL</div>
+          <div class="items"><span>MongoDB</span><span>Firebase Firestore</span><span>Redis</span><span>DynamoDB</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">Tools</div>
+          <div class="items"><span>phpMyAdmin</span><span>MySQL Workbench</span><span>MongoDB Compass</span><span>Prisma</span><span>Sequelize</span><span>Eloquent ORM</span></div>
+        </div>
+      </div>
+
+      <p class="stack-group">Cloud / Infrastructure</p>
+      <div class="stack-list">
+        <div class="stack-row">
+          <div class="cat">Backend-as-a-Service</div>
+          <div class="items"><span>Firebase</span><span>Supabase</span><span>Neon</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">Deployment / Hosting</div>
+          <div class="items"><span>Vercel</span><span>Netlify</span><span>Render</span><span>Railway</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">Storage</div>
+          <div class="items"><span>Cloudinary</span><span>Firebase Storage</span><span>Supabase Storage</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">Cloud Databases</div>
+          <div class="items"><span>Google Cloud SQL</span><span>MongoDB Atlas</span><span>Supabase Database</span><span>Firebase Firestore</span></div>
+        </div>
+      </div>
+
+      <p class="stack-group">DevOps / Developer Tools</p>
+      <div class="stack-list">
+        <div class="stack-row">
+          <div class="cat">Version Control &amp; CI/CD</div>
+          <div class="items"><span>Git</span><span>GitHub</span><span>GitLab</span><span>Bitbucket</span><span>Docker</span><span>Kubernetes</span><span>GitHub Actions</span><span>GitLab CI/CD</span><span>Jenkins</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">Servers &amp; Utilities</div>
+          <div class="items"><span>Nginx</span><span>Apache</span><span>Linux</span><span>Postman</span><span>Swagger / OpenAPI</span></div>
+        </div>
+        <div class="stack-row">
+          <div class="cat">IDE</div>
+          <div class="items"><span>VS Code</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-head"><h2>Projects</h2><span class="num">03</span></div>
+
+      <div class="project-list">
+        <div class="entry">
+          <div class="entry-head">
+            <h3>ParkSmart</h3>
+            <span class="tags">Full Stack · React · Vite · Node.js · MongoDB Atlas · Socket.IO</span>
+          </div>
+          <p>
+            A full-stack parking management platform featuring dynamic occupancy monitoring
+            and real-time space reservations. Architected with a React/Vite client interface,
+            Node.js/Express API layer, MongoDB Atlas, and bidirectional Socket.IO sync across Vercel and Render.
+          </p>
+          <div class="links">
+            <a href="https://park-smart-web-app-7rx8.vercel.app" class="rule-link" target="_blank" rel="noopener">Live demo</a>
+            <a href="https://github.com/HarmonJavier01" class="rule-link" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <h3>NextHire</h3>
+            <span class="tags">Flutter · Dart · Adzuna API · REST</span>
+          </div>
+          <p>
+            A mobile career and employment search platform tailored specifically for the
+            Philippine job landscape, querying live employment streams via the Adzuna API
+            with customizable salary filtering and local application bookmarks.
+          </p>
+          <div class="links">
+            <a href="https://drive.google.com/file/d/1N7MTMhnuR4LRvYnwf_tBxlqk7EketMb3/view?usp=sharing" class="rule-link" target="_blank" rel="noopener">Live demo</a>
+            <a href="https://github.com/HarmonJavier01/nexthire" class="rule-link" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <h3>MindWave</h3>
+            <span class="tags">Flutter · Dart · SQLite · Offline-first</span>
+          </div>
+          <p>
+            A confidential mental wellness and daily stress-tracking mobile app designed
+            offline-first and privacy-first from the ground up, guaranteeing personal logs
+            remain securely stored strictly on the local device.
+          </p>
+          <div class="links">
+            <a href="https://github.com/HarmonJavier01" class="rule-link" target="_blank" rel="noopener">Live demo</a>
+            <a href="https://github.com/HarmonJavier01" class="rule-link" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <h3>E-commerce Client Work</h3>
+            <span class="tags">Shopify · Liquid · Google Ads · Analytics</span>
+          </div>
+          <p>
+            Full-lifecycle theme engineering and performance marketing management for research-focused
+            and commercial e-commerce stores, delivering bespoke storefront functionality, rapid loading
+            metrics, and targeted ad campaigns.
+          </p>
+          <div class="links">
+            <a href="#contact" class="rule-link">Case study inquiry</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="certificates">
+      <div class="section-head"><h2>Certificates</h2><span class="num">04</span></div>
+      <div class="ledger-wrap">
+        <table class="ledger">
+          <tbody>
+            <tr>
+              <td class="date">July 2024</td>
+              <td class="title">
+                <button class="cert-btn rule-link" onclick="openCert('assets/cert/image.png', 'Google Developer Group — Google I/O Extended 2024 Certificate')">
+                  Google I/O Extended 2024 Certificate
+                </button>
+                <span class="sub">Annual developer conference credential on modern web and AI tools</span>
+              </td>
+              <td class="issuer">Google Developer Group</td>
+            </tr>
+            <tr>
+              <td class="date">May 2022</td>
+              <td class="title">
+                <button class="cert-btn rule-link" onclick="openCert('assets/cert/Networking.jpg', 'Computer Networking Specialist — 12th IT Skills Olympics Finalist')">
+                  Computer Networking Specialist (IT Skills Olympics)
+                </button>
+                <span class="sub">Hands-on networking configuration, topology deployment, and security</span>
+              </td>
+              <td class="issuer">University of Makati</td>
+            </tr>
+            <tr>
+              <td class="date">Jan 2024</td>
+              <td class="title">
+                <button class="cert-btn rule-link" onclick="openCert('assets/cert/Screenshot 2025-07-18 163115.png', 'Cybersecurity Essentials &amp; Network Defense Course')">
+                  Cybersecurity Essentials &amp; Network Defense
+                </button>
+                <span class="sub">Network protocols, threat detection, and mitigation strategies</span>
+              </td>
+              <td class="issuer">Cisco Networking Academy</td>
+            </tr>
+            <tr>
+              <td class="date">July 2026</td>
+              <td class="title">
+                <a href="https://www.coursera.org/account/accomplishments/verify/OT13ENTUGRVJ" target="_blank" rel="noopener" class="rule-link">
+                  Verified Foundations of Cybersecurity
+                </a>
+                <span class="sub">Foundational studies in cybersecurity principles, network security &amp; threat analysis.</span>
+              </td>
+              <td class="issuer">Coursera Verified</td>
+            </tr>
+            <tr>
+              <td class="date">July 2026</td>
+              <td class="title">
+                <a href="https://www.coursera.org/account/accomplishments/verify/47IPKB6U9872" target="_blank" rel="noopener" class="rule-link">
+                  Verified Introduction to AI
+                </a>
+                <span class="sub">Foundational studies in machine learning concepts, neural networks &amp; and AI applications.</span>
+              </td>
+              <td class="issuer">Coursera Verified</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">Click on underlined certificate titles to inspect credential archives.</p>
+    </section>
+
+    <section id="seminars">
+      <div class="section-head"><h2>Seminars &amp; Events</h2><span class="num">05</span></div>
+      <div class="ledger-wrap">
+        <table class="ledger">
+          <tbody>
+            <tr>
+              <td class="date">Aug 2024</td>
+              <td class="title">Cross-Platform Engineering with Flutter &amp; Dart Webinar</td>
+              <td class="issuer">Google Developer Group</td>
+            </tr>
+            <tr>
+              <td class="date">July 2024</td>
+              <td class="title">Google I/O Extended Baguio — AI Advancements &amp; Web Platform</td>
+              <td class="issuer">University of Baguio</td>
+            </tr>
+            <tr>
+              <td class="date">May 2024</td>
+              <td class="title">Cybersecurity Defense &amp; Ethical Hacking Intensive Workshop</td>
+              <td class="issuer">Cisco Networking Academy</td>
+            </tr>
+            <tr>
+              <td class="date">Nov 2024</td>
+              <td class="title">13th IT Skills Olympics — Computer Networking</td>
+              <td class="issuer">University of Makati</td>
+            </tr>
+            <tr>
+              <td class="date">Nov 2023</td>
+              <td class="title">12th IT Skills Olympics — Computer Networking</td>
+              <td class="issuer">University of Makati</td>
+            </tr>
+            
+            <tr>
+              <td class="date">Nov 2022</td>
+              <td class="title">11th IT Skills Olympics — Computer Networking</td>
+              <td class="issuer">University of Makati</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-head"><h2>Contact</h2><span class="num">06</span></div>
+      <div class="contact-wrap">
+        <div>
+          <form id="contactForm" action="javascript:void(0);" onsubmit="handleContact(event)">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" type="text" autocomplete="name" required placeholder="Your name">
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" type="email" autocomplete="email" required placeholder="your.email@example.com">
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" required placeholder="Brief project description or inquiry..."></textarea>
+            </div>
+            <button class="btn btn-solid" type="submit" id="submitBtn">Send message</button>
+            <div id="dispatchAlert" class="contact-dispatch-alert">
+              Message recorded in local dispatch log. Harmon has received your inquiry notification and will reply shortly.
+            </div>
+          </form>
+        </div>
+
+        <div class="contact-links">
+          <div class="contact-meta-item">
+            <strong>Direct Correspondence</strong>
+            <a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCKCDlQMHfjHtntFWmPpzxZWrrKghLRRhDTxpjTmtWjLsgDQWZrmGjrWPgZGsdjzrbfdzStL" class="rule-link" target="_blank">harmonjavier01@gmail.com</a>
+          </div>
+          <div class="contact-meta-item">
+            <strong>Code Repositories</strong>
+            <a href="https://github.com/HarmonJavier01" class="rule-link" target="_blank" rel="noopener">github.com/HarmonJavier01</a>
+          </div>
+          <div class="contact-meta-item">
+            <strong>Professional Network</strong>
+            <a href="https://www.linkedin.com/in/harmon-javier-689b832a4/" class="rule-link" target="_blank" rel="noopener">linkedin.com/in/harmon-javier</a>
+          </div>
+          <div class="contact-meta-item">
+            <strong>Location &amp; Phone</strong>
+            <span>Sison, Pangasinan, Philippines</span><br>
+            <span>+63 938 905 7715</span>
+          </div>
+          <div class="contact-meta-item">
+            <strong>Curriculum Vitae</strong>
+            <a href="HARMON L. JAVIER.pdf" download="Harmon_Javier_Resume.pdf" class="rule-link" target="_blank">Download CV (PDF)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© <span id="year">2026</span> Harmon Javier — Web | Mobile developer</span>
+      <button id="toTop" aria-label="Scroll back to top">back to top ↑</button>
+    </footer>
+
+  </div>
+</div>
+
+<!-- Lightbox Modal for Certificates -->
+<div id="certModal" class="modal-overlay" onclick="closeCertOnBackdrop(event)">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeCert()" aria-label="Close dialog">×</button>
+    <img id="modalImg" class="modal-img" src="" alt="Certificate Document">
+    <div id="modalCaption" class="modal-caption"></div>
+  </div>
+</div>
+
+<script>
+  // Set copyright year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Safe localStorage helper for file:// environments
+  function safeGetTheme() {
+    try {
+      return localStorage.getItem('journal-theme');
+    } catch (e) {
+      return null;
+    }
+  }
+  function safeSetTheme(val) {
+    try {
+      localStorage.setItem('journal-theme', val);
+    } catch (e) {}
+  }
+
+  // Dark/Light Theme Switch
+  const toggle = document.getElementById('modeToggle');
+  const savedTheme = safeGetTheme();
+  if (savedTheme === 'dark' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+    toggle.setAttribute('aria-pressed', 'true');
+  }
+
+  toggle.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    toggle.setAttribute('aria-pressed', String(isDark));
+    safeSetTheme(isDark ? 'dark' : 'light');
+  });
+
+  // Intercept all in-page anchor clicks to prevent file:// URL cross-origin frame navigation errors
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href && href.length > 1) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+
+  // Smooth scroll to top
+  document.getElementById('toTop').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Certificate Modal Handler
+  const certModal = document.getElementById('certModal');
+  const modalImg = document.getElementById('modalImg');
+  const modalCaption = document.getElementById('modalCaption');
+
+  function openCert(src, caption) {
+    modalImg.src = src;
+    modalImg.alt = caption;
+    modalCaption.textContent = caption;
+    certModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCert() {
+    certModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function closeCertOnBackdrop(e) {
+    if (e.target === certModal) {
+      closeCert();
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && certModal.classList.contains('active')) {
+      closeCert();
+    }
+  });
+
+  // Contact Form Submission Handler
+  function handleContact(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const alert = document.getElementById('dispatchAlert');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (!name || !email || !message) return false;
+
+    submitBtn.textContent = 'Transmitting...';
+    submitBtn.disabled = true;
+
+    // Simulate ledger dispatch and provide mailto fallback option
+    setTimeout(() => {
+      alert.style.display = 'block';
+      alert.innerHTML = `Thank you, <strong>${escapeHtml(name)}</strong>. Your message has been recorded in the dispatch ledger. Harmon will respond to <em>${escapeHtml(email)}</em> promptly. <a href="mailto:harmonjavier01@gmail.com?subject=Inquiry%20from%20${encodeURIComponent(name)}&body=${encodeURIComponent(message)}" class="rule-link" style="margin-left: 8px;">Open email client</a>`;
+      submitBtn.textContent = 'Sent ✓';
+      document.getElementById('contactForm').reset();
+    }, 400);
+
+    return false;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function(m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+    });
+  }
+
+  // Active Nav link tracking on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav.primary-nav a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    const scrollY = window.pageYOffset;
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 120;
+      const sectionHeight = section.offsetHeight;
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>
